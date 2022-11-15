@@ -22,6 +22,8 @@ options(stringsAsFactors = FALSE)
 ```{r}
 # install.packages("tidyverse")
 library(tidyverse)
+# install.packages("hflights")
+library(hflights) # load the library hflights
 ```
 
 
@@ -177,11 +179,138 @@ The first six rows should look like:
 5 2019-09-05 02:02:10 2019-09-05 2:2:10   j    
 6 2019-09-06 21:08:37 2019-09-06 21:8:37  k
 ```
-
-
 :::
 
 
+## complete()
+
+The first thing we will do is to create "fake" data to run our complete.
+
+```{r }
+#| label: fakedata
+
+fakeData <- data.frame(group = c(1:2,1),
+                       item_id = c(3:4,4),
+                       item_name = c("a", "b", "b"),
+                       value1 = c(1:3),
+                       value2 = c(4:6))
+fakeData
+```
 
 
+Now lets use complete to fill in the missing combinations 
+
+```{r }
+#| label:usecomplete
+
+  
+```
+
+By default `complete()` fills in missing lines with `NA`.  We can fill it in with other information if we wish. 
+
+```{r }
+#| label:completezeros
+
+```
+
+
+## Lets use some flight data
+
+```{r }
+#| label: hflights
+data(hflights) #load the data from hflights
+
+head(hflights) # look at the first 6 rows of hflights
+nrow(hflights)
+```
+
+## filter() 
+
+Choose which rows to work with
+
+```{r }
+#| label: hflightsfilter
+
+```
+
+## select()
+
+`select` chooses columns rather than rows
+
+```{r }
+#| label: useselect
+
+```
+
+## arrange() 
+
+reorder the data based on values within a column
+
+```{r }
+#| label: usearrange
+
+```
+
+## mutate() 
+
+Creates new columns or modifies existing columns in a data set 
+
+```{r }
+#| label: usemutate
+
+
+
+```
+
+## summarise()
+ Similar to mutate, but it returns a new "summarized" dataset
+ 
+```{r }
+#| label: usesummarise
+
+
+
+#calculate the mean, standard deviation, and coeficient of variation by unique carrier
+
+
+
+```
+
+::: {.callout-note appearance="simple"}
+
+## Challenge 4 - **The Big One**
+ 
+1. Read in the csv data using `read_csv` the `FAO_GlobalProduction.csv` from "https://raw.githubusercontent.com/chrischizinski/SNR_R_Data/3a0c1c34c8792e79fbce7277d216cadd84ecc973/FAO_GlobalProduction.csv"
+2. Convert from **wide** to **long** format to variables `year` and `prod`
+3. Rename the columns.  
+  * all columns to lowercase
+  * 'Country (Country)' to country
+  * 'Species (ASFIS species)' to common_name
+  * 'Production area (FAO major fishing area)' to prod_area
+  * 'Production source (Detailed production source)' to prod_source
+  * 'Measure (Measure)' to measure
+4. In prod, change '...' to NA
+5. Make `year` a column of numeric values
+6. keep only rows with `Capture production`, `Quantity (tonnes)`, and without `NA` in measure.  remove aquaculture as a prod_source
+7. Create a new column called `inland` which is a binary value of whether the region is inland or not
+8. Arrange by country, common_name, and year
+9.  Create a new column called log_catch that is the natural log (prod + 1)
+11. Calculate the mean log lifetime catch and coefficient of variation for each type of fishery (prod) in each country, common_name, prod_area, and prod_source
+12. Filter out fisheries with short time series (< 10 yrs)
+
+The first six rows of your result should look like:
+
+```{r}
+#| eval: false
+# Groups:   country, common_name, prod_area [6]
+  country     common_name                  prod_area                   prod_source      mean_…¹ cv_ca…²     N
+  <chr>       <chr>                        <chr>                       <chr>              <dbl>   <dbl> <int>
+1 Afghanistan Freshwater fishes nei        Asia - Inland waters        Capture product…    6.33  0.0892    65
+2 Albania     Angelsharks, sand devils nei Mediterranean and Black Sea Capture product…    2.93  0.388     19
+3 Albania     Atlantic bonito              Mediterranean and Black Sea Capture product…    2.47  0.369     19
+4 Albania     Bleak                        Europe - Inland waters      Capture product…    5.51  0.0565    20
+5 Albania     Bogue                        Mediterranean and Black Sea Capture product…    5.17  0.115     32
+6 Albania     Caramote prawn               Mediterranean and Black Sea Capture product…    3.93  0.484     20
+```
+:::
 
